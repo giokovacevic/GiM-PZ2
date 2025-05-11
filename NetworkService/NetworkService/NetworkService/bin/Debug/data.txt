@@ -1,0 +1,4 @@
+1,MeterOne,Smart,2.3
+2,MeterTwo,Interval,1.5
+4,MeterThree,Smart,1.8
+7,MeterFour,Interval,0.9

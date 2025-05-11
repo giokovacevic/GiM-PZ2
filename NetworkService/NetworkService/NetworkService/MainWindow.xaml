@@ -1,0 +1,109 @@
+﻿<Window x:Class="NetworkService.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NetworkService"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:NetworkService.ViewModel"
+    xmlns:views="clr-namespace:NetworkService.Views"
+    Title="Network Service Application"
+    Width="700"
+    Height="520"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+    Name="MainWindowRef"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <viewModel:MainWindowViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:NetworkEntitiesViewModel}">
+            <views:NetworkEntitiesView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:NetworkDisplayViewModel}">
+            <views:NetworkDisplayView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:MeasurementGraphViewModel}">
+            <views:MeasurementGraphView />
+        </DataTemplate>
+
+        <Style x:Key="NoHoverButtonStyle" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="./Assets/active.png"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Remove any hover effect -->
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+        
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="2"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="labelTitle" Grid.Column="0" VerticalAlignment="Center" Content="{Binding AppTitle}" FontSize="20" Margin="5, 0, 0, 0"></Label>
+            <Button Grid.Column="1" Style="{StaticResource NoHoverButtonStyle}"  Cursor="Hand" Command="{Binding NavCommand}" CommandParameter="nemv">
+                <Button.Background>
+                    <ImageBrush ImageSource="./Assets/home.png"></ImageBrush>
+                </Button.Background>
+            </Button>
+            <Button Grid.Column="2" Style="{StaticResource NoHoverButtonStyle}" Cursor="Hand" Command="{Binding NavCommand}" CommandParameter="ndmv">
+                <Button.Background>
+                    <ImageBrush ImageSource="./Assets/display.png"></ImageBrush>
+                </Button.Background>
+            </Button>
+            <Button Grid.Column="3" Style="{StaticResource NoHoverButtonStyle}" Cursor="Hand" Command="{Binding NavCommand}" CommandParameter="mgmv">
+                <Button.Background>
+                    <ImageBrush ImageSource="./Assets/graphs.png"></ImageBrush>
+                </Button.Background>
+            </Button>
+            <Button Grid.Column="4" Style="{StaticResource NoHoverButtonStyle}" Cursor="Hand">
+                <Button.Background>
+                    <ImageBrush ImageSource="./Assets/undo.png"></ImageBrush>
+                </Button.Background>
+            </Button>
+            <Button Grid.Column="5" Style="{StaticResource NoHoverButtonStyle}" Cursor="Hand" Command="{Binding PrevCommand}">
+                <Button.Background>
+                    <ImageBrush ImageSource="./Assets/back.png"></ImageBrush>
+                </Button.Background>
+            </Button>
+            <Button Grid.Column="6" Style="{StaticResource NoHoverButtonStyle}" Cursor="Hand" Command="{Binding ExitCommand}" CommandParameter="{Binding ElementName=MainWindowRef}">
+                <Button.Background>
+                    <ImageBrush ImageSource="./Assets/exit.png"></ImageBrush>
+                </Button.Background>
+            </Button>
+        </Grid>
+        <Label Grid.Row="1" Background="gray"></Label>
+        <ContentControl Grid.Row="2" Content="{Binding CurrentViewModel}" />
+    </Grid>
+</Window>

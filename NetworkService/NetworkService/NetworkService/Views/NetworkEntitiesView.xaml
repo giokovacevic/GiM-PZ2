@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="NetworkService.Views.NetworkEntitiesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NetworkService.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:NetworkService.ViewModel"
+    d:DesignHeight="448"
+    d:DesignWidth="700"
+    mc:Ignorable="d">
+    <UserControl.DataContext>
+        <viewModel:NetworkEntitiesViewModel />
+    </UserControl.DataContext>
+
+   
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <!-- LEVA STRANA -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <!-- OVO JE ZA FILTEROVANJE -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"></ColumnDefinition>
+                    <ColumnDefinition Width="80"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="40"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <RadioButton Grid.Column="0" Margin="3, 0 ,0, 0" VerticalAlignment="Center" IsChecked="{Binding FilterSmart}"></RadioButton>
+                <Label Grid.Column="0" Content="Smart"  Margin="15, 0 ,0, 0" VerticalAlignment="Center" FontSize="16"></Label>
+                <RadioButton Grid.Column="1"  Margin="3, 0 ,0, 0" VerticalAlignment="Center" IsChecked="{Binding FilterInterval}"></RadioButton>
+                <Label Grid.Column="1" Content="Interval"  Margin="15, 0 ,0, 0" VerticalAlignment="Center" FontSize="16"></Label>
+                <TextBox Grid.Column="2" Height="28" VerticalAlignment="center" FontSize="16" Text="{Binding FilterName}"></TextBox>
+                <Button Grid.Column="3" Content="Search" Width="40" Height="28" VerticalAlignment="center" Command="{Binding FilterOnCommand}"></Button>
+                <Button Grid.Column="4" Content="Clear"  Width="40" Height="28" VerticalAlignment="center" Command="{Binding FilterOffCommand}"></Button>
+            </Grid>
+
+            <!-- OVO JE ZA LISTU -->
+            
+                    
+                    <DataGrid Padding="5" ItemsSource="{Binding HelperMeters}" Grid.Row="1" x:Name="dgMeters" IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Select">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox  Width="30" Height="28" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="50" FontSize="18" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="130" FontSize="18"/>
+                    <DataGridTextColumn Header="Type" Binding="{Binding TypeOfMeterString}" Width="80" FontSize="18" />
+                    <DataGridTextColumn Header="Value" Binding="{Binding Measure}" Width="*" FontSize="18"/>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+         
+        <!-- DESNA STRANA -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <!--  NASLOV I FORMA ZA DODAVANJE -->
+            <Label Grid.Row="0"  Content="New Meter Form" VerticalAlignment="center" HorizontalAlignment="Center" FontSize="18"></Label>
+            <Label Grid.Row="1" FontSize="16"  Content="Name:" Margin="20, 0, 0, 0"></Label>
+            <TextBox Grid.Row="1" Height="28" VerticalAlignment="center" Width="160" Margin="0, 0, 25, 0" FontSize="16" HorizontalAlignment="Right" Text="{Binding Name}"></TextBox>
+            <Label Grid.Row="2" FontSize="16"  Content="Type:" Margin="20, 0, 0, 0"></Label>
+            <ComboBox Grid.Row="2" Height="28" HorizontalAlignment="Right" Margin="0, 0, 25, 0" VerticalAlignment="center" Width="160" FontSize="16" ItemsSource="{Binding TypesOfMeter}" SelectedItem="{Binding TypeOfMeter, Mode=TwoWay}"></ComboBox>
+            <Label Grid.Row="3" FontSize="16"  Content="Measure:" Margin="20, 0, 0, 0"></Label>
+            <TextBox Grid.Row="3" Height="28" HorizontalAlignment="Right" Margin="0, 0, 125, 0" VerticalAlignment="center" Width="60" FontSize="16" Text="{Binding Measure}"></TextBox>
+            <Label Grid.Row="3" FontSize="16"  Content="ID:" Margin="190, 0, 0, 0"></Label>
+            <TextBox Grid.Row="3" Height="28" HorizontalAlignment="Right" Margin="0, 0, 25, 0" VerticalAlignment="center" Width="40" FontSize="16" Text="{Binding Id}"></TextBox>
+            <Button Grid.Row="4" Content="Delete" Height="28" Width="115" VerticalAlignment="center" HorizontalAlignment="Left" Margin="25, 0, 0, 0" Command="{Binding DeleteCommand}"></Button>
+            <Button Grid.Row="4" Content="Add" Height="28" Width="115" VerticalAlignment="center" HorizontalAlignment="Right" Margin="0, 0, 25, 0" Command="{Binding AddCommand}"></Button>
+            <TextBlock Grid.Row="5" Foreground="Red" Text="{Binding ErrorMessage}" VerticalAlignment="center" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" Padding="25" ></TextBlock>
+            <TextBox Grid.Row="6" Background="Black" Width="270" Height="130" Foreground="White"></TextBox>
+        </Grid>
+    </Grid>
+</UserControl>
